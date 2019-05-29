@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Globals
+export PHANTEON="$PWD/functions/phanteon"
+. $dir/etc/postinstrc
+
+# Teste de conexão
+wget -q --spider http://www.google.com
+if ! [ $? -eq 0 ]; then
+    printf "\n\033[1;31m [X] Você está Offline. Conect-se a Internet e tente novamente.\33[0m"
+    printf "\n\033[1;31m [X] Alguns módulos do sistema não funcionam sem conexão com a Internet.\33[0m\n\n"
+    exit
+fi
+
+# Checando Gerenciador de Pacotes
+whatis $PKGMAN 2> /dev/null > /dev/null
+if ! [ $? -eq 0 ]; then
+    if [[ $PKGMAN == *"apt-get"* ]]; then
+        source $PWD/lib/debian.sh
+        APPS="$PWD/data/debian/apps.list"
+        PURGED="$dir/data/debian/purge.list"
+        DWLDS="$PWD/data/debian/downloads.list"
+    else
+        printf "\nDesculpe, mas seu gerenciador de pacotes ainda não é suportado.\n\n"
+        exit
+    fi
+else
+    printf "\nSeu gerenciador de pacotes não pôde ser identificado.\n\n"
+    exit
+fi
+
+# Funções de mensagens
+success() { printf "\33[32m  [✔] $1  \33[0m\n" ; }
+error() { printf "\n\033[1;31m [X] $1  \33[0m\n" ; }
+warning() { printf "\n\033[1;33m [!] $1  \33[0m\n"; }
+
+# Exportando Funções
+export success
+export error
+export warning

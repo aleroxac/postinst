@@ -1,0 +1,42 @@
+#!/bin/bash
+
+dir="$(dirname "$0")"
+source etc/config
+
+process_option() {
+  case $1 in
+    'u') # Atualizar o sistema
+        . $dir/functions/upgrade.sh && upgrade
+        ;;
+    'r') # Remover aplicativos
+        . $dir/functions/cleanup.sh && cleanup
+        ;;
+    'i') # Instalar aplicativos
+        . $dir/functions/apps.sh && apps
+        ;;
+    'c') # Customizar seu sistema
+        . $dir/functions/phanteon.sh && phanteon
+        ;;
+    'f') # Executar pós-instalação completa(todos os itens anteriores)
+        . $dir/functions/upgrade.sh && upgrade
+        . $dir/functions/apps.sh && apps
+        . $dir/functions/phanteon.sh && phanteon
+        . $dir/functions/cleanup.sh && cleanup
+        break
+        ;;
+    's') # Desligar o sistema
+        shutdown -r now
+        break
+        ;;
+    'h') # Ver o manual do sistema
+        man $PWD/man/manpage && exit
+        ;;
+    'q') # Sair do programa
+        exit
+        ;;
+    *) # Opção inválida
+        warning "Opção inválida. Tente novamente."
+        ;;
+  esac
+}
+export -f process_option

@@ -1,0 +1,13 @@
+GITEMAIL="email@provider.com"
+DOTFILES="$HOME/.dotfiles"
+GRUBOPT="quiet profile"
+GRUBTIMEOUT=2
+PKGMAN="pacman"
+My_XDG_DESKTOP_DIR='"$HOME/Desktop"'
+My_XDG_DOCUMENTS_DIR='"$HOME/Documents"'
+My_XDG_DOWNLOAD_DIR='"$HOME/Downloads"'
+My_XDG_MUSIC_DIR='"$HOME/Documents/Musics"'
+My_XDG_PICTURES_DIR='"$HOME/Documents/Pictures"'
+My_XDG_PUBLICSHARE_DIR='"$HOME/Documents/Public"'
+My_XDG_TEMPLATES_DIR='"$HOME/Documents/Templates"'
+My_XDG_VIDEOS_DIR='"$HOME/Documents/Videos"'

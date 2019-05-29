@@ -1,0 +1,78 @@
+.\" Manpage for POSTINST
+.\" Contact augustocs.ti@hotmail.com to correct erros or typos
+.TH POSTSINT 7 "26 May 2016" "2.0" "POSTINST User Manual"
+.SH NAME
+postinst \- Utilitário de pós-instalação
+.SH SYNOPSIS
+postinst [OPTION]
+.SH DESCRIPTION
+Contêm um conjunto de scripts para configurar um Sistema Operacional GNU/Linux da família Debian,
+inicialmente(uma vez que pode ser feitas implementãções para qualquer outro sistema) recém instalado,
+visando automatizar a customização do mesmo, proporcionando-lhe uma experiência rápida e
+proveitosa de pós-instalação, libertando-o das horas na configuração final, polindo e
+lapidando seu sistema, sem deixar de lado suas configurações pessoais, as quais podem ser
+facilmente incorporadas no sistema.
+
+.SH OPTIONS
+.TP
+.BR \-u ", " \-\-upgrade
+Atualiza o lista de repotório e o próprio sistema
+.TP
+.BR \-r ", " \-\-remove
+Limpa o sistema
+.TP
+.BR \-i ", " \-\-install
+Instala aplicativos
+.TP
+.BR \-c ", " \-\-customize
+Executa scripts de customização para configurar o bootup, speedup e o que mais você quiser, desde que seja incluso no diretório correto.[Ver mais em "Como incluir um script pessoal no Phanteon"]
+.TP
+.BR \-f ", " \-\-full
+Executa o processo pós-instalação completo(todos os itens anteriores)
+.TP
+.BR \-s ", " \-\-shutdown
+Reinicia o sistema
+.TP
+.BR \-h ", " \-\-help
+Exibe este manual.
+.TP
+.BR \-q
+Sai do programa
+
+
+.SH Examples
+POSTINST --upgrade
+POSTINST --remove
+POSTINST --install
+POSTINST --customize
+POSTINST --full
+POSTINST --shutdown
+POSTINST --quit
+.SH BUGS
+Sem bugs conhecidos.
+.SH AUTHOR
+Augusto Cardoso dos Santos(acardoso.ti@gmail.com)
+
+.SH "HOW TO"
+*Como incluir um script pessoal no Phanteon
+.PP
+.br
+1-Transferir o arquivo para a pasta "postinst/functions/phanteon"
+.br
+2-Editar o arquivo "postinst/functions/phanteon.sh" e inserir uma linha com o nome da função do script adicionado anteriormente
+.PP
+.br
+Nota(1): Certifique-se de definir o nome da função de modo que não seja um comando do shell e/ou um programa. Ex.:shutdown,clear,bash,git
+
+.SH "SEE ALSO"
+.PP
+.br
+Você pode obter a última versão deste sistema através do repositório git: https://github.com/aleroxac/postinst/\n
+.br
+Copyright © 2016 Free Software Foundation, Inc.
+.br
+Licença GPLv3+: GNU GPL versão 3 <http://gnu.org/licenses/gpl.html>.
+.br
+Este é um software livre: Você é livre para mudar e redistribuí-lo.
+.br
+Não há NENHUMA GARANTIA, até o limite permitido por lei.
