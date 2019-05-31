@@ -2,7 +2,6 @@ GITEMAIL="email@provider.com"
 DOTFILES="$HOME/.dotfiles"
 GRUBOPT="quiet profile"
 GRUBTIMEOUT=2
-PKGMAN="pacman"
 My_XDG_DESKTOP_DIR='"$HOME/Desktop"'
 My_XDG_DOCUMENTS_DIR='"$HOME/Documents"'
 My_XDG_DOWNLOAD_DIR='"$HOME/Downloads"'

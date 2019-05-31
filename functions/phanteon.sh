@@ -1,11 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Import settings
-dir="$(dirname "$0")"
-source $PWD/etc/postinstrc
-
-for i in $(ls $PHANTEON); do
-    . $PWD/functions/phanteon/$i
+for i in $(ls phanteon); do
+    . $PWD/phanteon/$i
 done
 
 # Executando scripts de customização do diretório phanteon

@@ -1,27 +1,57 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-dir="$(dirname "$0")"
-source etc/config
+# Funções de mensagens
+success() { printf "\33[32m  [✔] $1  \33[0m\n" ; }
+error() { printf "\n\033[1;31m [X] $1  \33[0m\n" ; }
+warning() { printf "\n\033[1;33m [!] $1  \33[0m"; }
+
+
+check_resources() {
+    # Checando conexão com a Internet
+    wget -q --spider http://www.google.com
+    if [ $? -eq 1 ]; then
+        printf "\n\033[1;31m [X] Você está Offline. Conecte-se a Internet e tente novamente.\33[0m"
+        printf "\n\033[1;31m [X] Alguns módulos do sistema não funcionam sem conexão com a Internet.\33[0m\n\n"
+    fi
+
+    # Checando Gerenciador de Pacotes
+    [[ -d /var/cache/pacman/pkg/ ]] && PKGMAN='pacman'         
+    [[ -d /var/cache/apt/archives ]] && PKGMAN='apt'
+
+    if [[ $(which $PKGMAN 2>&1 /dev/null) ]]; then
+        if [ $PKGMAN == "apt" ]; then
+            . ../lib/debian.sh
+            APPS="$PWD/data/debian/apps.list"
+            PURGED="$dir/data/debian/purge.list"
+            DWLDS="$PWD/data/debian/downloads.list"
+        else
+            printf "\nDesculpe, mas seu gerenciador de pacotes ainda não é suportado.\n\n"
+        fi
+    else
+        printf "\nSeu gerenciador de pacotes não pôde ser identificado.\n\n"
+    fi
+}
+
 
 process_option() {
   case $1 in
     'u') # Atualizar o sistema
-        . $dir/functions/upgrade.sh && upgrade
+        . $PWD/functions/upgrade.sh && upgrade
         ;;
     'r') # Remover aplicativos
-        . $dir/functions/cleanup.sh && cleanup
+        . $PWD/functions/cleanup.sh && cleanup
         ;;
     'i') # Instalar aplicativos
-        . $dir/functions/apps.sh && apps
+        . $PWD/functions/apps.sh && apps
         ;;
     'c') # Customizar seu sistema
-        . $dir/functions/phanteon.sh && phanteon
+        . $PWD/functions/phanteon.sh && phanteon
         ;;
     'f') # Executar pós-instalação completa(todos os itens anteriores)
-        . $dir/functions/upgrade.sh && upgrade
-        . $dir/functions/apps.sh && apps
-        . $dir/functions/phanteon.sh && phanteon
-        . $dir/functions/cleanup.sh && cleanup
+        . $PWD/functions/upgrade.sh && upgrade
+        . $PWD/functions/apps.sh && apps
+        . $PWD/functions/phanteon.sh && phanteon
+        . $PWD/functions/cleanup.sh && cleanup
         break
         ;;
     's') # Desligar o sistema
@@ -39,4 +69,11 @@ process_option() {
         ;;
   esac
 }
+
+
+# Exportando Funções
+export success
+export error
+export warning
+export check_resources
 export -f process_option

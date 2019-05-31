@@ -5,6 +5,7 @@ dir="$(dirname "$0")"
 PIPLIST="$PWD/data/pip.list"
 PYENV="$PWD/data/pyenv.list"
 
+function setpyenv(){
 if ! [ -e ~/.pyenv/versions/3.5.0 ]; then
     printf "\nInstalar utilitários para o pyenv...\n"
     pkginstall $PYENV 2> /dev/null
@@ -26,7 +27,7 @@ if ! [ -e ~/.pyenv/versions/3.5.0 ]; then
     printf "\nInstalando os items da piplist...\n"
     pip install $(cat $PIPLIST)
     else
-    success "Configurar o pyenv."
+    success "Pyenv instalado!"
     fi
 }
 

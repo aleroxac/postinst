@@ -4,12 +4,12 @@ function github(){
 
     # Solicitando entrada de dados do usuário
     read -p "Qual o seu nome de usuário do Github?: " GITUSER
+    read -p "Qual o seu email da conta do Github?: " GITEMAIL
     read -s -p "Qual sua senha do Github?: " GITPWD;echo
     read -p "Qual será o nome de sua chave ssh?: " KEYTITLE;echo
 
     # Criando chavé ssh pública e privada
-    ssh-keygen -t rsa -b 4096 -C augustocs.ti@hotmail.com
-    eval "$(ssh-agent -s)"
+    ssh-keygen -t rsa -b 4096 -C ${GITEMAIL}
     ssh-add ~/.ssh/id_rsa
     KEY=$(cat ~/.ssh/id_rsa.pub)
 

@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-#dir="$(dirname "$0")"
-#PURGED="$dir/data/purge.list"
+source ../etc/skel
+check_resources
 
 function cleanup() {
     # Removendo pacotes desnecessários
-    pkgremove $PURGED
+    # pkgremove ../data/purge.list
 
-    success "Pacotes desnecessários removidos!"
+    clear && success "Pacotes desnecessários removidos!"
 }
