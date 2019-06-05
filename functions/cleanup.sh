@@ -7,5 +7,5 @@ function cleanup() {
     # Removendo pacotes desnecessários
     # pkgremove ../data/purge.list
 
-    clear && success "Pacotes desnecessários removidos!"
+    success "Pacotes desnecessários removidos!"
 }

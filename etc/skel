@@ -3,7 +3,7 @@
 # Funções de mensagens
 success() { printf "\33[32m  [✔] $1  \33[0m\n" ; }
 error() { printf "\n\033[1;31m [X] $1  \33[0m\n" ; }
-warning() { printf "\n\033[1;33m [!] $1  \33[0m"; }
+warning() { printf "\n\033[1;33m [!] $1  \33[0m\n"; }
 
 
 check_resources() {
@@ -20,7 +20,7 @@ check_resources() {
 
     if [[ $(which $PKGMAN 2>&1 /dev/null) ]]; then
         if [ $PKGMAN == "apt" ]; then
-            . ../lib/debian.sh
+            . $PWD/lib/debian.sh
             APPS="$PWD/data/debian/apps.list"
             PURGED="$dir/data/debian/purge.list"
             DWLDS="$PWD/data/debian/downloads.list"

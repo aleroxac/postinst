@@ -1,21 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function speedup() {
-
     # Habilitando prelinking
     if [ -f /etc/default/prelink ]; then
         if cat /etc/default/prelink | grep "PRELINKING=unknown" > /dev/null; then
-            sudo sed -i "s/PRELINKING=unknown/PRELINKING=yes/g" /etc/default/prelink
+            sed -i "s/PRELINKING=unknown/PRELINKING=yes/g" /etc/default/prelink
         fi
     fi
 
     # Configurando opções do prelink
     if cat /etc/default/prelink | grep "PRELINK_OPTS=-mR" > /dev/null; then
-        sudo sed -i "s/PRELINK_OPTS=-mR/PRELINK_OPTS=-amR/g" /etc/default/prelink
+        sed -i "s/PRELINK_OPTS=-mR/PRELINK_OPTS=-amR/g" /etc/default/prelink
     fi
 
     # Executando prelink
-    sudo prelink -amvR
+    prelink -amvR
 
     success "Speed Configurado!"
 }

@@ -4,5 +4,5 @@ function upgrade() {
     # Atualizando lista de pacotes e sistema
     sysupdate
     sysupgrade
-    clear &&  success "Sistema atualizado!"
+    success "Sistema atualizado!"
 }

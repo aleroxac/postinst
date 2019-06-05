@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function apps() {
 
@@ -8,5 +8,5 @@ function apps() {
     # Baixando e instalando pacotes .deb
     pkgfileinstall $DWLDS
 
-    clear && success "Apps instalado!"
+    success "Apps instalado!"
 }
