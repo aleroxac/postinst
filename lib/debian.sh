@@ -1,54 +1,39 @@
 #!/usr/bin/env bash
 
-function sysupdate(){
-    printf "Atualizando sua lista de pacotes...\n"
-    apt update
-}
+function sysupdate(){ apt update ;}
 
-function sysupgrade(){
-    printf "Atualizando seu sistema...\n"
-    apt upgrade -y
-    apt dist-upgrade -y
-}
+function pkginstall(){ apt install $(cat $1) ;}
 
-function pkginstall(){
-    printf "Instalando pacotes...\n"
-    apt install $(cat $1)
-}
+function installdepends() {  apt install -fy ;}
 
-function installdepends() {  apt install -fy ; }
+function sysclean(){ apt autoclean -y && apt clean ;}
+
+function sysautoremove() { apt autoremove -y ;}
+
+function sysupgrade(){ 
+    apt upgrade -y && apt dist-upgrade -y
+    success "Sistema atualizado!"
+}
 
 function pkgfileinstall(){
-    printf "Baixando e instalando pacotes .deb...\n"
     wget -c -P ~/Downloads -i $1
     dpkg -i ~/Downloads/*.deb
     installdepends
 }
 
-function sysautoremove() { apt autoremove -y ; }
-
 function pkgremove(){
-    dpkg --get-selections $(cat $1) > /tmp/remapps.tmp 2> /dev/null
+    PKGS_TO_REMOVE='/tmp/pkgs_to_remove'
+    dpkg --get-selections $(cat ${PURGE}) 2> /dev/null | awk '{print $1}' > ${PKGS_TO_REMOVE}
 
-    if [ -s /tmp/remapps.tmp ]; then
-        REMAPPS=$(cat /tmp/remapps.tmp | awk '{print $1}')
-        printf '\nRemovendo aplicações desnecessárias...\n'
-        cat /tmp/remapps.tmp|awk '{print $1}'|nl;echo
+    if [ $( wc -l ${PKGS_TO_REMOVE} | awk '{print $1}') -gt 1 ] ; then
+        apt remove --purge -y $(cat ${PKGS_TO_REMOVE})
+        rm -f ${PKGS_TO_REMOVE}
 
-        apt remove --purge $REMAPPS
-        if [ $(dpkg --get-selections deborphan >/dev/null) ]; then
-            apt remove --purge -y $(deborphan)
-        fi
-        sysautoremove
-        sysclean
+        sysautoremove && sysclean
+        apt remove --purge -y $(deborphan)
+
+        success "Pacotes desnecessários removidos!"
     else
-        success "Remover aplicações desnecessárias"
+        warning "Não haviam pacotes para serem removidos."
     fi
-    if [ -e /tmp/remapps.tmp ]; then rm /tmp/remapps.tmp;fi
-}
-
-function sysclean(){
-    printf 'Limpando cache do gerenciador de pacotes...\n'
-    apt autoclean -y
-    apt clean
 }

@@ -1,15 +1,8 @@
 vim
-ppa-purge
-gparted
-gedit-plugins
-nautilus-dropbox
-preload
-prelink
 openssh-client
 openssh-server
 git-core
 curl
 p7zip
-rar
 unrar
 tree

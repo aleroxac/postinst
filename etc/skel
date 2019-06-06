@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # Funções de mensagens
-success() { printf "\33[32m  [✔] $1  \33[0m\n" ; }
-error() { printf "\n\033[1;31m [X] $1  \33[0m\n" ; }
-warning() { printf "\n\033[1;33m [!] $1  \33[0m\n"; }
+success() { printf "\33[32m[✔] $1  \33[0m\n" ; }
+error() { printf "\n\033[1;31m[X] $1  \33[0m\n" ; }
+warning() { printf "\n\033[1;33m[!] $1  \33[0m\n"; }
 
 
 check_resources() {
@@ -14,6 +14,9 @@ check_resources() {
         printf "\n\033[1;31m [X] Alguns módulos do sistema não funcionam sem conexão com a Internet.\33[0m\n\n"
     fi
 
+    # Checando usuário
+    [ $EUID -ne 0 ] && echo "Use o sudo ou execute como root" && exit 1
+
     # Checando Gerenciador de Pacotes
     [[ -d /var/cache/pacman/pkg/ ]] && PKGMAN='pacman'         
     [[ -d /var/cache/apt/archives ]] && PKGMAN='apt'
@@ -22,7 +25,7 @@ check_resources() {
         if [ $PKGMAN == "apt" ]; then
             . $PWD/lib/debian.sh
             APPS="$PWD/data/debian/apps.list"
-            PURGED="$dir/data/debian/purge.list"
+            PURGE="$dir/data/debian/purge.list"
             DWLDS="$PWD/data/debian/downloads.list"
         else
             printf "\nDesculpe, mas seu gerenciador de pacotes ainda não é suportado.\n\n"
@@ -30,6 +33,16 @@ check_resources() {
     else
         printf "\nSeu gerenciador de pacotes não pôde ser identificado.\n\n"
     fi
+    
+    # Checando dependências
+    deps=('wget' 'curl' 'deborphan')
+    for app in "${deps}"; do
+        type -P "${app}" > /dev/null
+        if [ $? -eq 1 ]; then
+            echo "${app} não instalado. Instalando..."
+            apt install -y "${app}"
+        fi
+    done
 }
 
 
